@@ -2,6 +2,7 @@
 # gcc compiler used, and must be available
 
 # standard usage: $ make
+# make sure not to have any existing '.o' in your build directory
 
 # simple release build is standard for now
 all: release

@@ -19,7 +19,7 @@ ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 COMPILER_SRC_FILES =
 LINKER_SRC_FILES =
 RUNNER_SRC_FILES =
-SRC_FILES = \
+SRC_FILES =           \
 $(ROOT_DIR)/src/slg.c \
 $(COMPILER_SRC_FILES) \
 $(LINKER_SRC_FILES)   \

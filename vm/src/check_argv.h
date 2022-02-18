@@ -14,6 +14,7 @@
 #define SLG_MODE_COMPILE      2
 #define SLG_MODE_LINK         3
 #define SLG_MODE_COMPILE_LINK 4
+#define SLG_MODE_HELP         5
 
 // module input
 int slg_mode = SLG_MODE_NONE;
@@ -33,7 +34,14 @@ int check_argv_errors(int argc, char** argv) {
 	memset(is_file_name, 0, sizeof(int) * argc);
 	
 	for (int i = 0; i < argc; i++) {
-		if (!strcmp("-r", argv[i])) {
+		if (!strcmp("-h", argv[i])) {
+			// help section wanted, ignore all other potential flags/files
+			slg_mode = SLG_MODE_HELP;
+			
+			// exit immediately
+			free(is_file_name);
+			return 0;
+		} else if (!strcmp("-r", argv[i])) {
 			// multiple -r flags found
 			if (run_flag_id != ~0) {
 				printf("[fatal error]: multiple occurrences of '-r' flag found\n");

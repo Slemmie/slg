@@ -10,6 +10,7 @@
 
 #include "util/exit_codes.h"
 #include "check_argv.h"
+#include "print_help.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,6 +23,12 @@ int main(int argc, char** argv) {
 		// error(s) were found, halt
 		// the function has already printed potential error messages
 		return SLG_EXIT_BAD_ARGV;
+	}
+	
+	// if help section is wanted, print it, then exit
+	if (slg_mode == SLG_MODE_HELP) {
+		pr_help_argv();
+		return SLG_EXIT_SUCCESSFUL;
 	}
 	
 	// if command-line information wasn't set properly, then exit

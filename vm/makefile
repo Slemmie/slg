@@ -16,7 +16,8 @@ C_DEBUG_FLAGS = -g -fsanitize=address -fsanitize=undefined
 ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 # list of source files
-COMPILER_SRC_FILES =
+COMPILER_SRC_FILES = \
+$(ROOT_DIR)/src/compiler/compiler.c
 LINKER_SRC_FILES =
 RUNNER_SRC_FILES =
 SRC_FILES =           \
@@ -51,4 +52,8 @@ debug:
 # specific compilation of each source file - most are exactly alike
 .PHONY: $(ROOT_DIR)/src/slg.c
 $(ROOT_DIR)/src/slg.c:
+	gcc $(C_FLAGS) $@ -c $(C_TRAIL_FLAGS)
+
+.PHONY: $(ROOT_DIR)/src/compiler/compiler.c
+$(ROOT_DIR)/src/compiler/compiler.c:
 	gcc $(C_FLAGS) $@ -c $(C_TRAIL_FLAGS)

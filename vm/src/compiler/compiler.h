@@ -12,4 +12,4 @@
 
 // returns 0 if nothing went wrong
 // the function takes care of potential error printing itself
-extern int compile(const char* output_file, char char* input_file);
+extern int compile(const char* output_file, const char* input_file);

@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 // utility function for checking whether a character is a whitespace
 int is_whitespace(char character) {
@@ -25,6 +26,7 @@ int is_digit(char character) {
 }
 
 // create a token from a snippet of source code
+// it is important that the snippet pointed to by 'it' is terminated by '\0' when calling this
 Token create_token(char* it, size_t size) {
 	// this should not happen
 	// if it does, it should not be because of a user mistake
@@ -49,8 +51,10 @@ Token create_token(char* it, size_t size) {
 		
 		// check whether all characters are indeed digits
 		for (size_t i = 0; i < size; i++) {
-			if (!is_digit(it + size)) {
-				printf("[fatal error]: unexpected non-digit character in numerical constant expression\n");
+			if (!is_digit(*(it + i))) {
+				printf(
+				"[fatal error]: unexpected non-digit character '%c' in numerical constant expression\n",
+				*(it + i));
 				exit(SLG_EXIT_SOURCE_CODE_ERROR);
 			}
 		}
@@ -58,7 +62,7 @@ Token create_token(char* it, size_t size) {
 		// convert to integer
 		// only accept base 10 numbers for now
 		// we are not checking for any '0x' prefix or the like
-		result.data = strtol(it, it + size, 10);
+		result.data = strtol(it, NULL, 10);
 		
 		// return result
 		result.type = TOK_NUMBER;
@@ -159,7 +163,7 @@ Token create_token(char* it, size_t size) {
 }
 
 // convert source code to a list of tokens
-Token_list create_token_list(const char* source_code) {
+Token_list create_token_list(char* source_code) {
 	// first count the number of expected tokens
 	// we count number of times we encounter a
 	// white-space character with a non-white-space as previous character
@@ -176,6 +180,7 @@ Token_list create_token_list(const char* source_code) {
 	result.tokens = malloc(sizeof(Token) * expected_token_count);
 	
 	// now fill out the contents of each token
+	size_t current_token_ptr = 0;
 	for (char* it = source_code; *it != '\0'; it++) {
 		// continue in case of multiple whitespaces in a row
 		if (is_whitespace(*it)) {
@@ -192,10 +197,19 @@ Token_list create_token_list(const char* source_code) {
 		// temporarily set the whitespace character after the characters to '\0'
 		char temp = *it;
 		*it = '\0';
-		result.tokens[current_token_count++] = create_token(begin, (size_t) (it - begin));
+		result.tokens[current_token_ptr++] = create_token(begin, (size_t) (it - begin));
 		*it = temp;
 		// we are not pointing to a whitespace...
 	}
 	
 	return result;
+}
+
+// destruct a Token_list (mainly free Token* inside struct)
+void destruct_token_list(Token_list* token_list) {
+	if (token_list->tokens) {
+		free(token_list->tokens);
+		token_list->tokens = NULL;
+		token_list->size = 0;
+	}
 }

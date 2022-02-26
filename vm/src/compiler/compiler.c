@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 
+#include "token.h"
+
 int compile(const char* output_file, const char* input_file) {
 	// aquire source code from input_file
 	char* source_code = read_source(input_file);
@@ -14,6 +16,17 @@ int compile(const char* output_file, const char* input_file) {
 		printf("[fatal error]: failed to read input file '%s'\n", input_file);
 		exit(SLG_EXIT_FILE_ERROR);
 	}
+	
+	// get parsed token list
+	Token_list token_list = create_token_list(source_code);
+	
+	// more proccessing here...
+	
+	// free token list
+	destruct_token_list(&token_list);
+	
+	// free source code buffer
+	free(source_code);
 	
 	return 0;
 }

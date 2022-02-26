@@ -12,6 +12,8 @@
 #include "check_argv.h"
 #include "print_help.h"
 
+#include "compiler/compiler.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -40,6 +42,14 @@ int main(int argc, char** argv) {
 	}
 	
 	// launch modules here...
+	
+	// first, if we want to compile; compile
+	if (slg_mode == SLG_MODE_COMPILE) {
+		// simply compile the input file
+		compile(output_file_path, input_file_paths[0]);
+	} else if (slg_mode == SLG_MODE_COMPILE_LINK) {
+		// put some way to continue working on the output file immediately
+	}
 	
 	// free input_file_paths
 	if (input_file_paths) {

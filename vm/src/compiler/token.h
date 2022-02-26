@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <stdint.h>
+#include <stddef.h>
 
 // all supported types of tokens
 typedef enum {
@@ -80,4 +80,7 @@ typedef struct {
 } Token_list;
 
 // convert source code to a list of tokens
-Token_list create_token_list(const char* source_code);
+Token_list create_token_list(char* source_code);
+
+// destruct a Token_list (mainly free Token* inside struct)
+void destruct_token_list(Token_list* token_list);

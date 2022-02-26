@@ -64,7 +64,7 @@ typedef struct {
 	// possible data about the token
 	// might be a constant expression number
 	// might not be used
-	unsigned long long data;
+	uint64_t data;
 	
 } Token;
 

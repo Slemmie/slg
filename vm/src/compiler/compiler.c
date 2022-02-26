@@ -3,9 +3,10 @@
 #include "../util/read_file.h"
 #include "../util/exit_codes.h"
 
-#include <stdio.h>
-
 #include "token.h"
+#include "write_o_file.h"
+
+#include <stdio.h>
 
 int compile(const char* output_file, const char* input_file) {
 	// aquire source code from input_file
@@ -21,7 +22,7 @@ int compile(const char* output_file, const char* input_file) {
 	Token_list token_list = create_token_list(source_code);
 	
 	// create a binary file of instructions from the token list (write to output_file)
-	write_o_file(output_file, token_list);
+	write_o_file(output_file, &token_list);
 	
 	// free token list
 	destruct_token_list(&token_list);

@@ -16,9 +16,10 @@ C_DEBUG_FLAGS = -g -fsanitize=address -fsanitize=undefined
 ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 # list of source files
-COMPILER_SRC_FILES =                \
-$(ROOT_DIR)/src/compiler/compiler.c \
-$(ROOT_DIR)/src/compiler/token.c
+COMPILER_SRC_FILES =                    \
+$(ROOT_DIR)/src/compiler/compiler.c     \
+$(ROOT_DIR)/src/compiler/token.c        \
+$(ROOT_DIR)/src/compiler/write_o_file.c
 LINKER_SRC_FILES =
 RUNNER_SRC_FILES =
 SRC_FILES =           \
@@ -61,4 +62,8 @@ $(ROOT_DIR)/src/compiler/compiler.c:
 
 .PHONY: $(ROOT_DIR)/src/compiler/token.c
 $(ROOT_DIR)/src/compiler/token.c:
+	gcc $(C_FLAGS) $@ -c $(C_TRAIL_FLAGS)
+
+.PHONY: $(ROOT_DIR)/src/compiler/write_o_file.c
+$(ROOT_DIR)/src/compiler/write_o_file.c:
 	gcc $(C_FLAGS) $@ -c $(C_TRAIL_FLAGS)

@@ -3,6 +3,7 @@
 #pragma once
 
 #include <stddef.h>
+#include <stdint.h>
 
 // all supported types of tokens
 typedef enum {

@@ -43,8 +43,16 @@ typedef enum {
 	// put result of ascii value of read character into somewhere in stack
 	TOK_SYS_READ = 13,
 	
+	// constant expression numerical value
+	TOK_NUMBER = 14,
+	
+	// address, whenever we put '&' in source code,
+	// interpret the following number as being a pointer to somewhere
+	// instead of it being a raw TOK_NUMBER
+	TOK_ADDRESS = 15,
+	
 	// number of fields (not an operation)
-	TOK_CNT = 14
+	TOK_CNT = 16
 	
 } Token_type;
 
@@ -70,3 +78,6 @@ typedef struct {
 	Token* tokens;
 	
 } Token_list;
+
+// convert source code to a list of tokens
+Token_list create_token_list(const char* source_code);

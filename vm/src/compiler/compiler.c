@@ -20,7 +20,8 @@ int compile(const char* output_file, const char* input_file) {
 	// get parsed token list
 	Token_list token_list = create_token_list(source_code);
 	
-	// more proccessing here...
+	// create a binary file of instructions from the token list (write to output_file)
+	write_o_file(output_file, token_list);
 	
 	// free token list
 	destruct_token_list(&token_list);

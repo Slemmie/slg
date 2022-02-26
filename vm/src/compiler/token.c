@@ -156,6 +156,12 @@ Token create_token(char* it, size_t size) {
 		return result;
 	}
 	
+	/// TOK_HALT ///
+	if (!strcmp("halt", it)) {
+		result.type = TOK_HALT;
+		return result;
+	}
+	
 	// throw an error, we did not find any accepted interpretations of the number
 	printf("[fatal error]: unknown symbol\n");
 	exit(SLG_EXIT_SOURCE_CODE_ERROR);
@@ -174,10 +180,16 @@ Token_list create_token_list(char* source_code) {
 		previous_character = *it;
 	}
 	
+	// add one, since we want to add a halt operation at the end
+	expected_token_count++;
+	
 	// use exptected size to allocate a list of empty tokens
 	Token_list result;
 	result.size = expected_token_count;
 	result.tokens = malloc(sizeof(Token) * expected_token_count);
+	
+	// create the halt operation at the end at once
+	result.tokens[expected_token_count - 1].type = TOK_HALT;
 	
 	// now fill out the contents of each token
 	size_t current_token_ptr = 0;

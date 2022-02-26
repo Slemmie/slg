@@ -51,8 +51,13 @@ typedef enum {
 	// instead of it being a raw TOK_NUMBER
 	TOK_ADDRESS = 15,
 	
+	// halt operation, the compiler will always put a halt at the end of all the instructions
+	// halt can also be called explicitly, though
+	// it uses the byte stored at stack address 0 (faults if stack is empty)
+	TOK_HALT = 16,
+	
 	// number of fields (not an operation)
-	TOK_CNT = 16
+	TOK_CNT = 17
 	
 } Token_type;
 

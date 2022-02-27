@@ -27,6 +27,11 @@ void write_o_file(const char* output_file, Token_list* token_list) {
 		if (token_list->tokens[i].type == TOK_NUMBER) {
 			fwrite(&token_list->tokens[i].data, sizeof(uint64_t), 1, outfile);
 		}
+		if (token_list->tokens[i].type == TOK_SYMBOL) {
+			fwrite(&token_list->tokens[i].data, sizeof(uint64_t), 1, outfile);
+			// additionally, print the symbol name as a string of the length we just printed
+			fwrite(token_list->tokens[i].symbol, sizeof(char), token_list->tokens[i].data, outfile);
+		}
 	}
 	
 	fclose(outfile);

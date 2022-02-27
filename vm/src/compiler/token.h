@@ -57,8 +57,16 @@ typedef enum {
 	// it uses the byte stored at stack address 0 (faults if stack is empty)
 	TOK_HALT = 16,
 	
+	// label token, used to define the decleration/definition a symbol in the source code
+	// when decleration support gets added later, declerations are marked with extern kerword
+	TOK_LABEL = 17,
+	
+	// symbol token, used for the actual symbols that the linker will deal with
+	// TOK_SYMBOL appears whenever we want to jump somewhere
+	TOK_SYMBOL = 18,
+	
 	// number of fields (not an operation)
-	TOK_CNT = 17
+	TOK_CNT = 19
 	
 } Token_type;
 
@@ -71,6 +79,10 @@ typedef struct {
 	// might be a constant expression number
 	// might not be used
 	uint64_t data;
+	
+	// possible string of characters
+	// used to store possible symbol names
+	char* symbol;
 	
 } Token;
 

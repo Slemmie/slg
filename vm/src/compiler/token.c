@@ -70,7 +70,7 @@ Token create_token(char* it, size_t size) {
 	}
 	
 	// check for any keywords
-	// if we do not find a match, then for now we throw an error
+	// if we do not find a match, then assume we are referring to a symbol
 	
 	/// TOK_GROW ///
 	if (!strcmp("grow", it)) {
@@ -162,9 +162,22 @@ Token create_token(char* it, size_t size) {
 		return result;
 	}
 	
-	// throw an error, we did not find any accepted interpretations of the number
-	printf("[fatal error]: unknown symbol\n");
-	exit(SLG_EXIT_SOURCE_CODE_ERROR);
+	/// TOK_LABEL ///
+	if (!strcmp("lab", it)) {
+		result.type = TOK_LABEL;
+		return result;
+	}
+	
+	// assume we are referring to a symbol, since we did not match any other keywords
+	
+	// it is important that the source_code buffer lifetime extends beyond wherever
+	// we write the binary file from the token list
+	// as we use pointers to the source code buffer whenever we store symbols inside token structs
+	
+	/// TOK_SYMBOL ///
+	result.type = TOK_SYMBOL;
+	result.data = strlen(it);
+	result.symbol = it;
 	return result;
 }
 

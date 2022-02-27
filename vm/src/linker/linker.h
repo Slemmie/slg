@@ -26,6 +26,8 @@
 // lastly we create the final draft of the entire executable
 // we add a jump instruction at the very top that jumps to the entry point (start symbol)
 
+#include <stddef.h>
+
 // returns zero if nothing went wrong
 // the function takes care of potential error printing itself
 extern int link(const char* output_file, const char** input_files, size_t input_count);

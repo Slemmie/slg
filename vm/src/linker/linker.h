@@ -28,4 +28,4 @@
 
 // returns zero if nothing went wrong
 // the function takes care of potential error printing itself
-extern int link(const char* output_file, const char** input_files);
+extern int link(const char* output_file, const char** input_files, size_t input_count);

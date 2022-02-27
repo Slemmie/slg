@@ -19,6 +19,8 @@ int link_binaries(const char* output_file, const char** input_files, size_t inpu
 		exit(SLG_EXIT_FILE_ERROR);
 	}
 	
+	
+	
 	// free the input binaries
 	for (size_t i = 0; i < input_count; i++) {
 		free(input_binaries[i]);

@@ -3,6 +3,7 @@
 #include "../util/read_file.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 
 void** read_binaries(const char** filepaths, size_t count) {
 	// firstly, if there are no input files at all

@@ -2,10 +2,13 @@
 
 #include "../util/exit_codes.h"
 
+#include "read_binaries.h"
+
 #include <stdio.h>
 #include <stddef.h>
+#include <stdlib.h>
 
-int link(const char* output_file, const char** input_files, size_t input_count) {
+int link_binaries(const char* output_file, const char** input_files, size_t input_count) {
 	// first aquire the input binaries
 	// first sizeof(uint64_t) bytes hold the file size
 	void** input_binaries = read_binaries(input_files, input_count);

@@ -6,3 +6,5 @@
 #define SLG_EXIT_BAD_ARGV          (1 << 2)
 #define SLG_EXIT_FILE_ERROR        (2 << 2)
 #define SLG_EXIT_SOURCE_CODE_ERROR (3 << 2)
+#define SLG_EXIT_COMPILATION_ERROR (4 << 2)
+#define SLG_EXIT_LINKING_ERROR     (5 << 2)

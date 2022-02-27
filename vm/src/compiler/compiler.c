@@ -7,6 +7,7 @@
 #include "write_o_file.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int compile(const char* output_file, const char* input_file) {
 	// aquire source code from input_file

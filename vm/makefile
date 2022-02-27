@@ -20,13 +20,18 @@ COMPILER_SRC_FILES =                    \
 $(ROOT_DIR)/src/compiler/compiler.c     \
 $(ROOT_DIR)/src/compiler/token.c        \
 $(ROOT_DIR)/src/compiler/write_o_file.c
-LINKER_SRC_FILES =
+LINKER_SRC_FILES = \
+$(ROOT_DIR)/src/linker/linker.c        \
+$(ROOT_DIR)/src/linker/read_binaries.c
 RUNNER_SRC_FILES =
+UTILITY_SRC_FILES = \
+$(ROOT_DIR)/src/util/read_file.c
 SRC_FILES =           \
 $(ROOT_DIR)/src/slg.c \
 $(COMPILER_SRC_FILES) \
 $(LINKER_SRC_FILES)   \
-$(RUNNER_SRC_FILES)
+$(RUNNER_SRC_FILES)   \
+$(UTILITY_SRC_FILES)
 
 # trailing flags - used whenever we call this makefile within itself
 C_TRAL_FLAGS =
@@ -66,4 +71,16 @@ $(ROOT_DIR)/src/compiler/token.c:
 
 .PHONY: $(ROOT_DIR)/src/compiler/write_o_file.c
 $(ROOT_DIR)/src/compiler/write_o_file.c:
+	gcc $(C_FLAGS) $@ -c $(C_TRAIL_FLAGS)
+
+.PHONY: $(ROOT_DIR)/src/linker/linker.c
+$(ROOT_DIR)/src/linker/linker.c:
+	gcc $(C_FLAGS) $@ -c $(C_TRAIL_FLAGS)
+
+.PHONY: $(ROOT_DIR)/src/linker/read_binaries.c
+$(ROOT_DIR)/src/linker/read_binaries.c:
+	gcc $(C_FLAGS) $@ -c $(C_TRAIL_FLAGS)
+
+.PHONY: $(ROOT_DIR)/src/util/read_file.c
+$(ROOT_DIR)/src/util/read_file.c:
 	gcc $(C_FLAGS) $@ -c $(C_TRAIL_FLAGS)

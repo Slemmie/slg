@@ -13,6 +13,7 @@
 #include "print_help.h"
 
 #include "compiler/compiler.h"
+#include "linker/linker.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,9 +47,30 @@ int main(int argc, char** argv) {
 	// first, if we want to compile; compile
 	if (slg_mode == SLG_MODE_COMPILE) {
 		// simply compile the input file
-		compile(output_file_path, input_file_paths[0]);
+		int compilation_status = compile(output_file_path, input_file_paths[0]);
+		
+		// make sure compilation was successful
+		if (compilation_status) {
+			printf("[fatal error]: compilation failed, return status was %d\n", compilation_status);
+			exit(SLG_EXIT_COMPILATION_ERROR);
+		}
 	} else if (slg_mode == SLG_MODE_COMPILE_LINK) {
-		// put some way to continue working on the output file immediately
+		// put some way to continue working on the output file immediately *[0]*
+	}
+	
+	// then, if we want to link; link
+	if (slg_mode == SLG_MODE_LINK) {
+		// simply link the input file(s)
+		int linking_status =
+		link_binaries(output_file_path, (const char**) input_file_paths, input_file_paths_count);
+		
+		// make sure linking was successful
+		if (linking_status) {
+			printf("[fatal error]: linking failed, return status was %d\n", linking_status);
+			exit(SLG_EXIT_LINKING_ERROR);
+		}
+	} else if (SLG_MODE_COMPILE_LINK) {
+		// put some way to continue with whatever way we use when compiling under this mode *[0]*
 	}
 	
 	// free input_file_paths

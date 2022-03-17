@@ -8,3 +8,4 @@
 #define SLG_EXIT_SOURCE_CODE_ERROR (3 << 2)
 #define SLG_EXIT_COMPILATION_ERROR (4 << 2)
 #define SLG_EXIT_LINKING_ERROR     (5 << 2)
+#define SLG_EXIT_INTERNAL_ERROR    (5 << 2)

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
 
 char* tmp_dir = NULL;
 
@@ -19,9 +20,12 @@ void create_tmp_dir() {
 	strcpy(tmp_dir, "/tmp/slg");
 	tmp_dir[30] = '/';
 	tmp_dir[31] = '\0';
-	for (int i = 8; i < 30; i++) {
-		tmp_dir[i] = '0' + (rand() % 10);
-	}
+	
+	do {
+		for (int i = 8; i < 30; i++) {
+			tmp_dir[i] = '0' + (rand() % 10);
+		}
+	} while (!access(tmp_dir, F_OK));
 	
 	int system_exit_status = 0;
 	

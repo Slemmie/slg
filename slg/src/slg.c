@@ -5,6 +5,7 @@
 #include "compile.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char** argv) {
 	// 1. parse command line arguments
@@ -23,6 +24,9 @@ int main(int argc, char** argv) {
 			free(argv_info.input_file_paths[i]);
 			argv_info.input_file_paths[i] = next_file_path;
 			argv_info.input_file_types[i] = ARGV_FILE_TYPE_ASM;
+			free(argv_info.input_file_paths_suffix[i]);
+			argv_info.input_file_paths_suffix[i] = malloc(sizeof(char) * 5);
+			strcpy(argv_info.input_file_paths_suffix[i], ".asm");
 		}
 	}
 	

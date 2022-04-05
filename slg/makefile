@@ -3,6 +3,10 @@
 all: release
 	make clean
 
+C_FLAGS = -std=c17 -Wshadow -Wall
+C_RELEASE_FLAGS = -O2
+C_DEBUG_FLAGS = -g -fsanitize=address -fsanitize=undefined
+
 SRC_FILES =           \
 $(wildcard ./src/*.c)
 
@@ -13,17 +17,17 @@ OBJ_FILES = ${SRC_FILES:.c=.o}
 OBJ_FILES_DBG = ${SRC_FILES:.c=_debug.o}
 
 release: ${OBJ_FILES}
-	gcc -std=c17 -Wshadow -Wall ${OBJ_FILES} -o slg -O2
+	gcc $(C_FLAGS) ${OBJ_FILES} -o slg $(C_RELEASE_FLAGS)
 
 %.o: %.c ${HEADER_FILES}
-	gcc -std=c17 -Wshadow -Wall -c $< -o $@ -O2
+	gcc $(C_FLAGS) -c $< -o $@ $(C_RELEASE_FLAGS)
 
 debug: ${OBJ_FILES_DBG}
-	gcc -std=c17 -Wshadow -Wall ${OBJ_FILES_DBG} -o slg -g -fsanitize=address -fsanitize=undefined
+	gcc $(C_FLAGS) ${OBJ_FILES_DBG} -o slg $(C_DEBUG_FLAGS)
 	make clean
 
 %_debug.o: %.c ${HEADER_FILES}
-	gcc -std=c17 -Wshadow -Wall -c $< -o $@ -g -fsanitize=address -fsanitize=undefined
+	gcc $(C_FLAGS) -c $< -o $@ -g $(C_DEBUG_FLAGS)
 
 .PHONY:
 clean:

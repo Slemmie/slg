@@ -15,7 +15,7 @@ release: ${OBJ_FILES}
 	gcc -std=c17 -Wshadow -Wall ${OBJ_FILES} -o slg -O2
 
 %.o: %.c ${HEADER_FILES}
-	gcc -std=c17 -Wshadow -Wall -c $< -o $@
+	gcc -std=c17 -Wshadow -Wall -c $< -o $@ -O2
 
 .PHONY:
 clean:

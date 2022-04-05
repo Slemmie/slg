@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 	for (size_t i = 0; i < argv_info.input_file_count; i++) {
 		if (argv_info.input_file_types[i] == ARGV_FILE_TYPE_SLG) {
 			char* next_file_path = NULL;
-			create_file_of(argv_info.input_file_paths[i], next_file_path);
+			create_file_of(argv_info.input_file_paths_prefix[i], ".asm", next_file_path);
 			compile(argv_info.input_file_paths[i], next_file_path);
 			free(argv_info.input_file_paths[i]);
 			argv_info.input_file_paths[i] = next_file_path;

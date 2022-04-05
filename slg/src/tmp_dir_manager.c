@@ -58,7 +58,7 @@ void clean_exit(int code) {
 	exit(code);
 }
 
-void create_file_of(const char* of_path, char* buffer) {
+void create_file_of(const char* of_path, const char* new_suffix, char* buffer) {
 	// create child directory inside tmp directory
 	int last_slash_index = -1;
 	for (int i = 0; of_path[i] != '\0'; i++) {
@@ -91,7 +91,8 @@ void create_file_of(const char* of_path, char* buffer) {
 	
 	// fill buffer
 	assert(!buffer);
-	buffer = malloc(sizeof(char) * (31 + strlen(of_path) + 1));
+	buffer = malloc(sizeof(char) * (31 + strlen(of_path) + strlen(new_suffix) + 1));
 	strcpy(buffer, tmp_dir);
 	strcat(buffer, of_path);
+	strcat(buffer, new_suffix);
 }

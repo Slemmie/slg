@@ -12,4 +12,4 @@ const char* get_tmp_dir();
 void clean_exit(int code);
 
 // create file in tmp fir based on input file
-void create_file_of(const char* of_path, const char* new_suffix, char* buffer);
+void create_file_of(const char* of_path, const char* new_suffix, char** buffer);

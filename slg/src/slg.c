@@ -2,6 +2,7 @@
 
 #include "parse_argv.h"
 #include "tmp_dir_manager.h"
+#include "compile.h"
 
 #include <stdlib.h>
 

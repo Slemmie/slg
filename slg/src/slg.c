@@ -1,6 +1,7 @@
 // slg entry point
 
 #include "parse_argv.h"
+#include "tmp_dir_manager.h"
 
 int main(int argc, char** argv) {
 	// parse command line arguments
@@ -8,6 +9,7 @@ int main(int argc, char** argv) {
 	parse_argv(&argv_info, argc, argv);
 	
 	// configure tmp directory
+	create_tmp_dir();
 	
 	// sort out input file(s) and output file
 	
@@ -20,5 +22,5 @@ int main(int argc, char** argv) {
 	// clean up
 	destruct_argv_info(&argv_info);
 	
-	return 0;
+	clean_exit(0);
 }

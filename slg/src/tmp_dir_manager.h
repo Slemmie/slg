@@ -10,3 +10,6 @@ const char* get_tmp_dir();
 
 // clean up tmp dir things, then call exit(code)
 void clean_exit(int code);
+
+// create file in tmp fir based on input file
+void create_file_of(const char* of_path, char* buffer);

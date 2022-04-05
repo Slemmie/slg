@@ -3,6 +3,8 @@
 #include "parse_argv.h"
 #include "tmp_dir_manager.h"
 
+#include <stdlib.h>
+
 int main(int argc, char** argv) {
 	// 1. parse command line arguments
 	Argv_info argv_info;

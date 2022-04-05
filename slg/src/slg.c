@@ -4,6 +4,8 @@
 
 int main(int argc, char** argv) {
 	// parse command line arguments
+	Argv_info argv_info;
+	parse_argv(&argv_info, argc, argv);
 	
 	// configure tmp directory
 	
@@ -14,6 +16,9 @@ int main(int argc, char** argv) {
 	// perform assembling
 	
 	// perform linking
+	
+	// clean up
+	destruct_argv_info(&argv_info);
 	
 	return 0;
 }

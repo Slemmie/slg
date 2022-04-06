@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <stdio.h>
+
 int main(int argc, char** argv) {
 	// 1. parse command line arguments
 	Argv_info argv_info;
@@ -40,9 +42,9 @@ int main(int argc, char** argv) {
 			char* next_file_path = NULL;
 			create_file_of(argv_info.input_file_paths_prefix[i], ".o", &next_file_path);
 			char* command = malloc(sizeof(char) *
-			(17 + strlen(argv_info.input_file_paths_prefix[i]) + 4 + strlen(next_file_path) + 1));
-			strcpy(command, "nasm -f elf64 -c ");
-			strcat(command, argv_info.input_file_paths_prefix[i]);
+			(14 + strlen(argv_info.input_file_paths[i]) + 4 + strlen(next_file_path) + 1));
+			strcpy(command, "nasm -f elf64 ");
+			strcat(command, argv_info.input_file_paths[i]);
 			strcat(command, " -o ");
 			strcat(command, next_file_path);
 			int system_exit_status = system(command);

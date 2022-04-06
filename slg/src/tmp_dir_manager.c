@@ -88,6 +88,7 @@ void create_file_of(const char* of_path, const char* new_suffix, char** buffer) 
 			clean_exit(1);
 		}
 	}
+	free(abs_dir_path);
 	
 	// fill buffer
 	assert(!(*buffer));

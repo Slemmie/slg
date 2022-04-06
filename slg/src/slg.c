@@ -45,6 +45,11 @@ int main(int argc, char** argv) {
 			strcat(command, argv_info.input_file_paths_prefix[i]);
 			strcat(command, " -o ");
 			strcat(command, next_file_path);
+			int system_exit_status = system(command);
+			if (!system_exit_status) {
+				destruct_argv_info(&argv_info);
+				clean_exit(1);
+			}
 			free(argv_info.input_file_paths[i]);
 			argv_info.input_file_paths[i] = next_file_path;
 			argv_info.input_file_types[i] = ARGV_FILE_TYPE_OBJ;
@@ -59,7 +64,30 @@ int main(int argc, char** argv) {
 		destruct_argv_info(&argv_info);
 		clean_exit(0);
 	}
-	// ...
+	{
+		int all_input_file_lengths = 0;
+		for (size_t i = 0; i < argv_info.input_file_count; i++) {
+			if (argv_info.input_file_types[i] == ARGV_FILE_TYPE_OBJ) {
+				all_input_file_lengths += strlen(argv_info.input_file_paths[i]) + 1;
+			}
+		}
+		char* command = malloc(sizeof(char) *
+		(3 + all_input_file_lengths + 4 + strlen(argv_info.output_file_path) + 1));
+		strcpy(command, "ld ");
+		for (size_t i = 0; i < argv_info.input_file_count; i++) {
+			if (argv_info.input_file_types[i] == ARGV_FILE_TYPE_OBJ) {
+				strcat(command,argv_info.input_file_paths[i]);
+				strcat(command, " ");
+			}
+		}
+		strcat(command, " -o ");
+		strcat(command, argv_info.output_file_path);
+		int system_exit_status = system(command);
+		if (!system_exit_status) {
+			destruct_argv_info(&argv_info);
+			clean_exit(1);
+		}
+	}
 	
 	// 6. clean up
 	destruct_argv_info(&argv_info);

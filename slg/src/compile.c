@@ -2,11 +2,19 @@
 
 #include "compile.h"
 
+#include "compilation_preprocessing.h"
+#include "util/file_io.h"
+
 void compile(const char* input_file_path, const char* output_file_path) {
 	// read input file into buffer
 	char* input_buffer = read_file(input_file_path);
 	
 	// perform preprocessing
+	// make sure bracket sequences are balanced
+	check_balanced_brackets(input_buffer);
+	// change all char const expressions inside "'" to raw numbers,
+	// also check whether "'" contains incorrect sequences
+	replace_charconstexpr(&input_buffer);
 	
 	// tokenize
 	

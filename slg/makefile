@@ -7,11 +7,13 @@ C_FLAGS = -std=c17 -Wshadow -Wall
 C_RELEASE_FLAGS = -O2
 C_DEBUG_FLAGS = -g -fsanitize=address -fsanitize=undefined
 
-SRC_FILES =           \
-$(wildcard ./src/*.c)
+SRC_FILES =                \
+$(wildcard ./src/*.c)      \
+$(wildcard ./src/util/*.c)
 
-HEADER_FILES =        \
-$(wildcard ./src/*.h)
+HEADER_FILES =             \
+$(wildcard ./src/*.h)      \
+$(wildcard ./src/util/*.h)
 
 OBJ_FILES = ${SRC_FILES:.c=.o}
 OBJ_FILES_DBG = ${SRC_FILES:.c=_debug.o}

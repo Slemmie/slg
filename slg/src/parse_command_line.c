@@ -2,6 +2,12 @@
 
 #include <stdlib.h>
 
+// rules
+//
+// if -s or -c is specified with input files beoynd the respective states - they are ignored and warned about
+// if an output file is specified, multiple input files are only allowed if the output file is an executable
+// default output files are: abc.slg -> abc.asm -> abc.o -> a.out
+
 Command_line_result construct_clr(int argc, char** argv) {
 	Command_line_result clr;
 	

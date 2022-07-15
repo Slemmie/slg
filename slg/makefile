@@ -15,7 +15,6 @@ OBJ_FILES_DEBUG = ${SRC_FILES:.c=__debug__.o}
 
 release: ${OBJ_FILES_RELEASE}
 	gcc $(C_FLAGS) $^ -o slg $(C_FLAGS_RELEASE)
-#	make clean
 
 %__release__.o: %.c ${HDR_FILES}
 	gcc $(C_FLAGS) -c $< -o $@ $(C_FLAGS_RELEASE)

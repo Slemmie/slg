@@ -16,5 +16,7 @@ void fatal_error(const char* format, ...) {
 	
 	fprintf(stderr, "\n");
 	
+	fflush(stderr);
+	
 	exit(EXIT_FAILURE);
 }

@@ -27,6 +27,8 @@ typedef enum {
 typedef struct {
 	
 	// mask of options, query it to know for instance if a single or multiple output files
+	// use CLO_E bit to check whether output_file field is expected to be in use
+	// output_files field should be in use if a single output file is expected, but it being non-executable
 	Command_line_option clo;
 	
 	// list of input filepaths

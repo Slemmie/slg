@@ -4,7 +4,7 @@ all: release
 
 C_FLAGS = -Wshadow -Wall -std=c17
 C_FLAGS_RELEASE = -O2
-C_FLAGS_DEBUG = -g -fsanitize=address,undefined
+C_FLAGS_DEBUG = -g -rdynamic -fsanitize=address,undefined -D__SLG_DEBUG
 
 SRC_FILES = $(wildcard ./src/*.c)
 

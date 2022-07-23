@@ -32,12 +32,12 @@ Command_line_result construct_clr(int argc, char** argv) {
 	// keep track of which command line tokens have been dealt with
 	int* dealt_with = malloc(sizeof(int) * argc);
 	if (!dealt_with) {
-		fatal_error("malloc failed");
+		internal_fatal_error("malloc failed");
 	}
 	memset(dealt_with, 0, sizeof(int) * argc);
 	
 	if (!dealt_with) {
-		fatal_error("malloc failed");
+		internal_fatal_error("malloc failed");
 	}
 	
 	// check if an output filepath is specified
@@ -45,6 +45,7 @@ Command_line_result construct_clr(int argc, char** argv) {
 		if (!strcmp("-o", argv[i])) {
 			if (i + 1 == argc) {
 				free(dealt_with);
+				destruct_clr(&clr);
 				fatal_error("missing output file after '-o' command line token");
 			}
 			
@@ -56,11 +57,9 @@ Command_line_result construct_clr(int argc, char** argv) {
 			clr.output_file = malloc(sizeof(char) * (len + 1));
 			
 			if (!clr.output_file) {
-				fatal_error("malloc failed");
-			}
-			
-			if (!clr.output_file) {
-				fatal_error("malloc failed");
+				free(dealt_with);
+				destruct_clr(&clr);
+				internal_fatal_error("malloc failed");
 			}
 			
 			memcpy(clr.output_file, argv[i], len);
@@ -111,7 +110,9 @@ Command_line_result construct_clr(int argc, char** argv) {
 		clr.output_file = malloc(sizeof(char) * (len + 1));
 		
 		if (!clr.output_file) {
-			fatal_error("malloc failed");
+			free(dealt_with);
+			destruct_clr(&clr);
+			internal_fatal_error("malloc failed");
 		}
 		
 		memcpy(clr.output_file, "a.out", len);
@@ -154,7 +155,9 @@ Command_line_result construct_clr(int argc, char** argv) {
 			clr.input_files[input_file_ptr] = malloc(sizeof(char) * (len + 1));
 			
 			if (!clr.input_files[input_file_ptr]) {
-				fatal_error("malloc failed");
+				free(dealt_with);
+				destruct_clr(&clr);
+				internal_fatal_error("malloc failed");
 			}
 			
 			memcpy(clr.input_files[input_file_ptr], argv[i], len);
@@ -169,7 +172,9 @@ Command_line_result construct_clr(int argc, char** argv) {
 			clr.input_file_no_ext[input_file_ptr] = malloc(sizeof(char) * (len + 1));
 			
 			if (!clr.input_file_no_ext[input_file_ptr]) {
-				fatal_error("malloc failed");
+				free(dealt_with);
+				destruct_clr(&clr);
+				internal_fatal_error("malloc failed");
 			}
 			
 			memcpy(clr.input_file_no_ext[input_file_ptr], argv[i], len);
@@ -192,13 +197,17 @@ Command_line_result construct_clr(int argc, char** argv) {
 				} else if (clr.clo & CLO_C) {
 					len += 2;
 				} else {
-					fatal_error("internal error");
+					free(dealt_with);
+					destruct_clr(&clr);
+					internal_fatal_error("unexpected error");
 				}
 				
 				clr.output_files[input_file_ptr] = malloc(sizeof(char) + (len + 1));
 				
 				if (!clr.output_files[input_file_ptr]) {
-					fatal_error("malloc failed");
+					free(dealt_with);
+					destruct_clr(&clr);
+					internal_fatal_error("malloc failed");
 				}
 				
 				memcpy(clr.output_files[input_file_ptr],
@@ -225,6 +234,8 @@ Command_line_result construct_clr(int argc, char** argv) {
 	
 	// check whether no input files were provided
 	if (!clr.count_input_files) {
+		free(dealt_with);
+		destruct_clr(&clr);
 		fatal_error("no input file provided");
 	}
 	
@@ -232,13 +243,19 @@ Command_line_result construct_clr(int argc, char** argv) {
 	// and check for read permission for each file
 	for (size_t i = 0; i < clr.count_input_files; i++) {
 		if (access(clr.input_files[i], F_OK)) {
+			free(dealt_with);
+			destruct_clr(&clr);
 			fatal_error("input file '%s' does not exist",  clr.input_files[i]);
 		}
 		
 		if (access(clr.input_files[i], R_OK)) {
+			free(dealt_with);
+			destruct_clr(&clr);
 			fatal_error("cannot access input file '%s' for reading", clr.input_files[i]);
 		}
 	}
+	
+	free(dealt_with);
 	
 	return clr;
 }
@@ -250,6 +267,18 @@ void destruct_clr(Command_line_result* clr) {
 				free(clr->input_files[i]);
 			}
 		}
+		
+		free(clr->input_files);
+	}
+	
+	if (clr->input_files) {
+		for (size_t i = 0; i < clr->count_input_files; i++) {
+			if (clr->input_file_no_ext[i]) {
+				free(clr->input_file_no_ext[i]);
+			}
+		}
+		
+		free(clr->input_file_no_ext);
 	}
 	
 	if (clr->input_files_format) {

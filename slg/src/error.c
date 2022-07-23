@@ -70,21 +70,21 @@ void* error_alloc(size_t bytes) {
 		if (!_error_alloc_container.buffer) {
 			internal_fatal_error("malloc failed");
 		}
-	} else {
-		int do_realloc = 0;
-		while (_error_alloc_container.size + 1 > _error_alloc_container.capacity) {
-			_error_alloc_container.capacity <<= 1;
-			
-			do_realloc = 1;
-		}
+	}
+	
+	int do_realloc = 0;
+	while (_error_alloc_container.size + 1 > _error_alloc_container.capacity) {
+		_error_alloc_container.capacity <<= 1;
 		
-		if (do_realloc) {
-			_error_alloc_container.buffer =
-			realloc(_error_alloc_container.buffer, _error_alloc_container.capacity);
-			
-			if (!_error_alloc_container.buffer) {
-				internal_fatal_error("realloc failed");
-			}
+		do_realloc = 1;
+	}
+	
+	if (do_realloc) {
+		_error_alloc_container.buffer =
+		realloc(_error_alloc_container.buffer, _error_alloc_container.capacity);
+		
+		if (!_error_alloc_container.buffer) {
+			internal_fatal_error("realloc failed");
 		}
 	}
 	

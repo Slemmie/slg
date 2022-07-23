@@ -243,15 +243,25 @@ Command_line_result construct_clr(int argc, char** argv) {
 	// and check for read permission for each file
 	for (size_t i = 0; i < clr.count_input_files; i++) {
 		if (access(clr.input_files[i], F_OK)) {
+			size_t len = strlen(clr.input_files[i]);
+			char* temp_errlog_str = error_alloc(sizeof(char) * (len + 1));
+			memcpy(temp_errlog_str, clr.input_files[i], len);
+			temp_errlog_str[len] = '\0';
+			
 			free(dealt_with);
 			destruct_clr(&clr);
-			fatal_error("input file '%s' does not exist",  clr.input_files[i]);
+			fatal_error("input file '%s' does not exist", temp_errlog_str);
 		}
 		
 		if (access(clr.input_files[i], R_OK)) {
+			size_t len = strlen(clr.input_files[i]);
+			char* temp_errlog_str = error_alloc(sizeof(char) * (len + 1));
+			memcpy(temp_errlog_str, clr.input_files[i], len);
+			temp_errlog_str[len] = '\0';
+			
 			free(dealt_with);
 			destruct_clr(&clr);
-			fatal_error("cannot access input file '%s' for reading", clr.input_files[i]);
+			fatal_error("cannot access input file '%s' for reading", temp_errlog_str);
 		}
 	}
 	

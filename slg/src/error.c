@@ -37,6 +37,17 @@ void _stack_tracer_sig(int sig) {
 }
 #endif
 
+typedef struct {
+	
+	size_t size;
+	size_t capacity;
+	
+	void** buffer;
+	
+} _Error_alloc_container;
+
+_Error_alloc_container _error_alloc_container;
+
 void init_errors() {
 #ifdef __SLG_DEBUG
 	signal(SIGFPE, _stack_tracer_sig);
@@ -47,6 +58,59 @@ void init_errors() {
 	signal(SIGIOT, _stack_tracer_sig);
 	signal(SIGSYS, _stack_tracer_sig);
 #endif
+	
+	_error_alloc_container.size = _error_alloc_container.capacity = 0;
+}
+
+void* error_alloc(size_t bytes) {
+	if (!_error_alloc_container.capacity) {
+		_error_alloc_container.buffer =
+		malloc(sizeof(void*) * (_error_alloc_container.capacity = 1));
+		
+		if (!_error_alloc_container.buffer) {
+			internal_fatal_error("malloc failed");
+		}
+	} else {
+		int do_realloc = 0;
+		while (_error_alloc_container.size + 1 > _error_alloc_container.capacity) {
+			_error_alloc_container.capacity <<= 1;
+			
+			do_realloc = 1;
+		}
+		
+		if (do_realloc) {
+			_error_alloc_container.buffer =
+			realloc(_error_alloc_container.buffer, _error_alloc_container.capacity);
+			
+			if (!_error_alloc_container.buffer) {
+				internal_fatal_error("realloc failed");
+			}
+		}
+	}
+	
+	_error_alloc_container.buffer[_error_alloc_container.size] = malloc(bytes);
+	
+	if (!_error_alloc_container.buffer[_error_alloc_container.size]) {
+		internal_fatal_error("malloc failed");
+	}
+	
+	return _error_alloc_container.buffer[_error_alloc_container.size++];
+}
+
+void _destruct__error_alloc_container() {
+	if (_error_alloc_container.buffer) {
+		for (size_t i = 0; i < _error_alloc_container.size; i++) {
+			if (_error_alloc_container.buffer[i]) {
+				free(_error_alloc_container.buffer[i]);
+			}
+		}
+		
+		free(_error_alloc_container.buffer);
+	}
+	
+	_error_alloc_container.size = _error_alloc_container.capacity = 0;
+	
+	_error_alloc_container.buffer = NULL;
 }
 
 void fatal_error(const char* format, ...) {
@@ -65,6 +129,8 @@ void fatal_error(const char* format, ...) {
 	fprintf(stderr, "\n");
 	_stack_tracer();
 #endif
+	
+	_destruct__error_alloc_container();
 	
 	exit(EXIT_FAILURE);
 }
@@ -85,6 +151,8 @@ void internal_fatal_error(const char* format, ...) {
 	fprintf(stderr, "\n");
 	_stack_tracer();
 #endif
+	
+	_destruct__error_alloc_container();
 	
 	exit(EXIT_FAILURE);
 }
